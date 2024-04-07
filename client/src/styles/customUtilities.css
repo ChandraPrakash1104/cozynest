@@ -1,0 +1,8 @@
+/* customUtilities.css */
+@tailwind utilities;
+
+@layer utilities {
+  .side-gap {
+    @apply mx-48;
+  }
+}

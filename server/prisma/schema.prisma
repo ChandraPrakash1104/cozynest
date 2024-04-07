@@ -1,0 +1,94 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// User model
+model User {
+  id   String @id @default(uuid())
+  username     String
+  firstname    String
+  lastname     String
+  password     String
+  email        String
+  address      String?
+  phone_number String?
+
+  // Define relationships
+  orders       Order[]
+  reviews      Review[]
+  cart         Cart[]
+}
+
+// Product model
+model Product {
+  id   String @id @default(uuid())
+  product_name    String
+  description     String
+  price           Float
+  stock_quantity  Int
+  category        String
+  image_url       String
+  type            String
+  // Define relationships
+  order_items     OrderItem[]
+  reviews         Review[]
+  carts           Cart[]
+}
+
+// Order model
+model Order {
+  id   String @id @default(uuid())
+  user_id      String
+  order_date   DateTime  @default(now())
+  total_amount Float
+
+  // Define relationships
+  user         User      @relation(fields: [user_id], references: [id])
+  order_items  OrderItem[]
+}
+
+// OrderItem model
+model OrderItem {
+  id   String @id @default(uuid())
+  order_id      String
+  product_id    String
+  quantity      Int
+  unit_price    Float
+
+  // Define relationships
+  order         Order   @relation(fields: [order_id], references: [id])
+  product       Product @relation(fields: [product_id], references: [id])
+}
+
+// Review model
+model Review {
+  id   String @id @default(uuid())
+  product_id   String
+  user_id      String
+  rating       Int
+  comment      String
+  review_date  DateTime @default(now())
+
+  // Define relationships
+  product      Product @relation(fields: [product_id], references: [id])
+  user         User    @relation(fields: [user_id], references: [id])
+}
+
+// Cart model
+model Cart {
+  id   String @id @default(uuid())
+  user_id     String
+  product_id  String
+  quantity    Int
+
+  // Define relationships
+  user        User    @relation(fields: [user_id], references: [id])
+  product     Product @relation(fields: [product_id], references: [id])
+}

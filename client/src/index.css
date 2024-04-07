@@ -1,0 +1,17 @@
+:root {
+  font-family: 'Poppins', sans-serif;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .hover-click-effect {
+    @apply hover:bg-slate-200 active:bg-slate-300;
+  }
+  .zoom-effect {
+    @apply transition-transform duration-200 ease-in-out;
+    @apply hover:scale-110;
+  }
+}
