@@ -10,6 +10,7 @@ import { useRecoilState } from 'recoil';
 import { authState } from '../../../../store/auth';
 import { loadingState } from '../../../../store/loading';
 import Loader from '../../../common/Loader/Loader';
+import { BACKEND_URL } from '../../../../utils/api';
 
 const Signin = () => {
   const [email, setEmail] = useState('');
@@ -29,17 +30,14 @@ const Signin = () => {
     const formdata = { password, email };
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/user/login`,
-        formdata
-      );
+      const response = await axios.post(`${BACKEND_URL}/user/login`, formdata);
       const parsedData = await response.data;
       const userDetails = JSON.stringify(parsedData.userDetails);
       localStorage.setItem('user', userDetails);
       console.log(userDetails);
       setPassword('');
       setEmail('');
-      setIsAuth({ isAuthenticated: true, user: userDetails });
+      setIsAuth({ isAuthenticated: true, user: parsedData.userDetails });
       navigate('/home');
     } catch (error) {
       console.log(error);

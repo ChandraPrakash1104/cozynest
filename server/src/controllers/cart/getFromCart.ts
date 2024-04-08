@@ -4,13 +4,54 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getAllItemsFromCart = async (
+export const getAllItemsFromUserCart = async (
   req: CustomeRequests,
   res: Response
 ) => {
   try {
-    const cartItems = await prisma.cart.findMany();
-    res.status(200).json({ cartItems });
+    const userId = req.user?.id;
+
+    const result = await prisma.user.findMany({
+      where: {
+        id: userId,
+      },
+      select: {
+        cart: {
+          select: {
+            id: true,
+            quantity: true,
+            user_id: true,
+            product: {
+              select: {
+                id: true,
+                product_name: true,
+                description: true,
+                image_url: true,
+                price: true,
+                stock_quantity: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    const [userCart] = result;
+
+    const formattedCartItems = userCart.cart.map((item) => ({
+      id: item.id,
+      quantity: item.quantity,
+      userId: item.user_id,
+      product: {
+        id: item.product.id,
+        productName: item.product.product_name,
+        description: item.product.description,
+        imageUrl: item.product.image_url,
+        price: item.product.price,
+        stockQuantity: item.product.stock_quantity,
+      },
+    }));
+
+    res.status(200).json({ cartItems: formattedCartItems });
   } catch (error) {
     console.error(error);
     res

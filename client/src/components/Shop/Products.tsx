@@ -7,10 +7,12 @@ import { useRecoilState } from 'recoil';
 import { loadingState } from '../../store/loading';
 import Loader from '../common/Loader/Loader';
 import AddToCartButton from '../common/Buttons/AddToCartButton';
+import { BACKEND_URL } from '../../utils/api';
+import { Product } from '../../typings/productTypes';
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useRecoilState(loadingState);
 
   const category = searchParams.get('category');
@@ -18,7 +20,7 @@ const Products = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        let URL = `${import.meta.env.VITE_BACKEND_URL}/product`;
+        let URL = `${BACKEND_URL}/product`;
         setLoading(true);
         if (category) {
           URL = URL + `/${encodeURIComponent(category)}`;

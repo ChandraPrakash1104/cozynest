@@ -1,54 +1,69 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { authState } from '../store/auth';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { AxiosResponse } from 'axios';
+import { authState } from '../store/auth';
 import { cartState } from '../store/cart';
-import { CartItem } from '../typings/cartTypes';
+import axiosInstance from '../utils/api';
+
+interface CartAction {
+  (): Promise<AxiosResponse<any>>;
+}
 
 export const useCart = () => {
   const [cart, setCart] = useRecoilState(cartState);
   const isAuthenticated = useRecoilValue(authState);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const fetchCartData = async () => {
-      // const reponse = axios.get()
-    };
-  }, [isAuthenticated]);
-
-  const updateCartItemQuantity = (productId: number, newQuantity: number) => {
-    setCart((preCart) =>
-      preCart.map((product) =>
-        product.id === productId
-          ? { ...product, quantity: newQuantity }
-          : product
-      )
-    );
-  };
-
-  const removeFromCart = (productId: number) => {
-    setCart(cart.filter((product) => product.id !== productId));
-  };
-
-  const addToCart = (userId: number, productId: number) => {
-    const itemInCart = cart.find(
-      (cartItem: CartItem) => cartItem.productId === productId
-    );
-
-    if (itemInCart) {
-      updateCartItemQuantity(productId, itemInCart.quantity + 1);
-    } else {
-      const newItem = {
-        id: cart.length + 1,
-        userId,
-        productId,
-        quantity: 1,
-      };
-      setCart((pre) => [...pre, newItem]);
+  const fetchCartData = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get('/cart');
+      const cartData = response.data.cartItems;
+      setCart(cartData);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  return { addToCart, loading, removeFromCart };
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchCartData();
+    }
+  }, [isAuthenticated]);
+
+  const handleCartUpdate = async (action: CartAction) => {
+    try {
+      await action();
+      await fetchCartData();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addToCart = async (productId: string) => {
+    await handleCartUpdate(() =>
+      axiosInstance.post('/cart', { productId, quantity: 1 })
+    );
+  };
+
+  const updateCartItem = async (cartItemId: string, quantity: number) => {
+    await handleCartUpdate(() =>
+      axiosInstance.put(`/cart/${cartItemId}`, { quantity })
+    );
+  };
+
+  const deleteCartItem = async (cartItemId: string) => {
+    await handleCartUpdate(() => axiosInstance.delete(`/cart/${cartItemId}`));
+  };
+
+  return {
+    cart,
+    isAuthenticated,
+    loading,
+    addToCart,
+    updateCartItem,
+    deleteCartItem,
+  };
 };

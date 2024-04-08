@@ -9,6 +9,7 @@ import AuthHeader from '../AuthHeader';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { authState } from '../../../../store/auth';
+import { BACKEND_URL } from '../../../../utils/api';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -30,9 +31,10 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/user/register`,
+        `${BACKEND_URL}/user/register`,
         formdata
       );
+
       const parsedData = await response.data;
       const userDetails = JSON.stringify(parsedData.userDetails);
       localStorage.setItem('user', userDetails);
@@ -42,7 +44,7 @@ const Signup = () => {
       setFirstname('');
       setLastname('');
       setEmail('');
-      setIsAuth({ isAuthenticated: true, user: userDetails });
+      setIsAuth({ isAuthenticated: true, user: parsedData.userDetails });
       navigate('/home');
     } catch (error) {
       console.log(error);

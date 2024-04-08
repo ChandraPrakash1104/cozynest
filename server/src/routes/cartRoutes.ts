@@ -3,7 +3,7 @@ import controllers from '../controllers/cart/cartController';
 const router: Router = express.Router();
 
 router.post('/', controllers.addItemToCart);
-router.get('/', controllers.getAllItemsFromCart);
+router.get('/', controllers.getAllItemsFromUserCart);
 router.get('/:cartId', controllers.getCartItemById);
 router.put('/:cartId', controllers.updateCartItem);
 router.delete('/:cartId', controllers.deleteCartItem);

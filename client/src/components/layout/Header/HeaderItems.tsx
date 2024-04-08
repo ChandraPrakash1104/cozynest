@@ -11,12 +11,12 @@ import { Link, NavLink } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { authState } from '../../../store/auth';
 import Logout from '../../Auth/Logout/Logout';
+import CartItemsCountsBadge from '../../Cart/CartItemsCountsBadge';
 
 const HeaderItems = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const isAuth = useRecoilValue(authState).isAuthenticated;
-  console.log(isAuth);
 
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -24,7 +24,6 @@ const HeaderItems = () => {
 
   const handleSeachClick = () => {
     setIsSearchOpen(!isSearchOpen);
-    console.log('clicked');
   };
 
   return (
@@ -65,7 +64,10 @@ const HeaderItems = () => {
       <li className='active:bg-gray-200 px-1 py-1  '>
         <img src={wishlistIcon} alt='wishlist' className='w-5' />
       </li>
-      <Link className='active:bg-gray-200 px-1 py-1' to={'/cart'}>
+      <Link className='active:bg-gray-200 px-1 py-1 relative' to={'/cart'}>
+        <div className='absolute top-0 right-0'>
+          <CartItemsCountsBadge />
+        </div>
         <img src={cartIcon} alt='cart' className='w-5' />
       </Link>
       <li

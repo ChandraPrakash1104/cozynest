@@ -1,5 +1,3 @@
-import { useRecoilState } from 'recoil';
-import { loadingState } from '../../store/loading';
 import Loader from '../common/Loader/Loader';
 import CartItems from '../Cart/CartItems';
 import Wrapper from '../common/UI/Wrapper';

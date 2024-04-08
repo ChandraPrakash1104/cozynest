@@ -1,8 +1,8 @@
 import { addItemToCart, updateCartItem, deleteCartItem } from './cartPost';
-import { getAllItemsFromCart, getCartItemById } from './getFromCart';
+import { getAllItemsFromUserCart, getCartItemById } from './getFromCart';
 const controllers = {
   addItemToCart,
-  getAllItemsFromCart,
+  getAllItemsFromUserCart,
   getCartItemById,
   updateCartItem,
   deleteCartItem,
