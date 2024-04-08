@@ -11,7 +11,7 @@ import { BACKEND_URL } from '../../utils/api';
 import { Product } from '../../typings/productTypes';
 
 const Products = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useRecoilState(loadingState);
 

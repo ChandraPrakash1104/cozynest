@@ -1,6 +1,6 @@
 interface PrimaryButtonProps {
   label: string;
-  size: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large';
   styles?: string;
   handleClick: React.MouseEventHandler<HTMLButtonElement>;
 }

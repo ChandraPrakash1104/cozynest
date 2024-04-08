@@ -16,7 +16,6 @@ import Login from './components/pages/auth/Login/Login';
 import Signup from './components/pages/auth/Signup/Signup';
 import './styles/customUtilities.css';
 import { RecoilRoot } from 'recoil';
-import AdminLogin from './components/pages/Admin/AdminLogin';
 import AddProduct from './components/pages/Admin/Product/AddProduct';
 import Cart from './components/pages/Cart';
 
@@ -36,7 +35,6 @@ const router = createBrowserRouter(
         <Route path='/signup' element={<Signup />} />
       </Route>
       <Route path='/admin'>
-        {/* <Route path='/admin/login' element={<AdminLogin />} /> */}
         <Route path='/admin/addproduct' element={<AddProduct />} />
       </Route>
     </Route>

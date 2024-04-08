@@ -14,7 +14,7 @@ const BannerBox = () => {
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequatur
         dolore minima dolor harum ut,
       </div>
-      <PrimaryButton label='BUY NOW' size='large' />
+      <PrimaryButton label='BUY NOW' size='large' handleClick={() => {}} />
     </div>
   );
 };
