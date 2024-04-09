@@ -16,7 +16,6 @@ const bulkFilter = async (req: Request, res: Response) => {
 const idFilter = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const product = await prisma.product.findFirst({
       where: {
         id,

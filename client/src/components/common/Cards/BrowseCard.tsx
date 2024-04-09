@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 
 const BrowseCard = ({ imgUrl, label }: { imgUrl: string; label: string }) => {
-  console.log(`/shop?category=${encodeURIComponent(label.toLowerCase())}`);
-
   return (
     <Link
       to={`/shop?category=${encodeURIComponent(label.toLowerCase())}`}

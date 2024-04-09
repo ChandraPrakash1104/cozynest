@@ -1,8 +1,6 @@
 import { useLogout } from '../../../hooks/useLogout';
 
 const Logout = ({ handleOnClick }: { handleOnClick?: () => void }) => {
-  console.log('clicked logout');
-
   const logout = useLogout();
   return (
     <div

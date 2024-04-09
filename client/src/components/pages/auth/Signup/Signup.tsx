@@ -38,7 +38,6 @@ const Signup = () => {
       const parsedData = await response.data;
       const userDetails = JSON.stringify(parsedData.userDetails);
       localStorage.setItem('user', userDetails);
-      console.log(userDetails);
       setUsername('');
       setPassword('');
       setFirstname('');

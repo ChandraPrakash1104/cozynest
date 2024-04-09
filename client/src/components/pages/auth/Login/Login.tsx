@@ -34,7 +34,6 @@ const Signin = () => {
       const parsedData = await response.data;
       const userDetails = JSON.stringify(parsedData.userDetails);
       localStorage.setItem('user', userDetails);
-      console.log(userDetails);
       setPassword('');
       setEmail('');
       setIsAuth({ isAuthenticated: true, user: parsedData.userDetails });

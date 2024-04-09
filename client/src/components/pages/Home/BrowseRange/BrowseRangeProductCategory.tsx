@@ -5,7 +5,6 @@ import BedRoomImage from '/src/assets/images/BrowseRangeImages/bedroomimage.png'
 import Wrapper from '../../../common/UI/Wrapper';
 
 const BrowseRangeProductCategory = () => {
-  console.log(LivingRoomImage);
   return (
     <Wrapper>
       <BrowseCard imgUrl={DiningRoomImage} label='Dining Room' />

@@ -2,8 +2,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export const useFetchProduct = (id: string) => {
-  console.log(id);
-
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(false);
 

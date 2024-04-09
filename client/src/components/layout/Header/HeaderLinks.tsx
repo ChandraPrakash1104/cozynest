@@ -6,7 +6,6 @@ import Logout from '../../Auth/Logout/Logout';
 
 const HeaderLinks = ({ handleOnClick }: { handleOnClick?: () => void }) => {
   const isAuth = useRecoilValue(authState);
-  console.log(isAuth);
   return (
     <>
       {handleOnClick && <CloseButton onClick={handleOnClick} />}

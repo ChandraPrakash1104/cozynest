@@ -37,8 +37,6 @@ const ProductValidationSchema = z.object({
 });
 
 const productPost = async (req: Request, res: Response) => {
-  console.log(req.body);
-
   try {
     if (!req.file) throw new Error('Image not provided');
     const result = await cloudinary.v2.uploader.upload(req.file.path);
