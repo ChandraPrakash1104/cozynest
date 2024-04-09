@@ -30,7 +30,7 @@ const AddProduct = () => {
       formData.append('type', type);
       formData.append('image', image);
 
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/product`,
         formData,
         {
