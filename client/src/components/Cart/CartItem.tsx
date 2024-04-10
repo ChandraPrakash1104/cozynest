@@ -8,6 +8,8 @@ const CartItem = ({
   description,
   price,
   cartItemId,
+  updateCartItem,
+  deleteCartItem,
 }: {
   productName: string;
   quantity: number;
@@ -15,7 +17,21 @@ const CartItem = ({
   description: string;
   cartItemId: string;
   price: number;
+  updateCartItem: (cartItemId: string, newQuantity: number) => void;
+  deleteCartItem: (cartItemId: string) => void;
 }) => {
+  const handleQuantityIncrease = () => {
+    updateCartItem(cartItemId, quantity + 1);
+  };
+
+  const handleQuantityDecrease = () => {
+    if (quantity - 1 <= 0) {
+      deleteCartItem(cartItemId);
+    } else {
+      updateCartItem(cartItemId, quantity - 1);
+    }
+  };
+
   return (
     <div className='flex justify-between '>
       <div className='flex'>
@@ -32,9 +48,15 @@ const CartItem = ({
           <div className='flex space-x-4'>
             <IncrementDecrementButton
               quantity={quantity}
-              cartItemId={cartItemId}
+              handleIncrease={handleQuantityIncrease}
+              handleDecrease={handleQuantityDecrease}
             />
-            <button className='zoom-effect'>
+            <button
+              className='zoom-effect'
+              onClick={() => {
+                deleteCartItem(cartItemId);
+              }}
+            >
               <DeleteIcon />
             </button>
           </div>

@@ -42,9 +42,9 @@ export const useCart = () => {
     }
   };
 
-  const addToCart = async (productId: string) => {
+  const addToCart = async (productId: string, quantity: number) => {
     await handleCartUpdate(() =>
-      axiosInstance.post('/cart', { productId, quantity: 1 })
+      axiosInstance.post('/cart', { productId, quantity })
     );
   };
 

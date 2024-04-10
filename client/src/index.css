@@ -14,4 +14,7 @@
     @apply transition-transform duration-200 ease-in-out;
     @apply hover:scale-110;
   }
+  .btn-click {
+    @apply active:scale-[98%] transition-all duration-100;
+  }
 }

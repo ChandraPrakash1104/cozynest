@@ -6,8 +6,8 @@ export const useFetchProduct = (id: string) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     const fetchProduct = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/product/${id}`
@@ -17,11 +17,11 @@ export const useFetchProduct = (id: string) => {
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     };
-    setLoading(false);
+
     fetchProduct();
-  }, []);
-  useEffect(() => {});
+  }, [id]);
 
   return { product, loading };
 };

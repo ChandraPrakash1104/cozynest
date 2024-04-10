@@ -1,6 +1,6 @@
 const Loader = () => {
   return (
-    <div className='w-screen h-screen flex justify-center items-center'>
+    <div className='w-screen flex justify-center items-center min-h-36'>
       <div role='status'>
         <svg
           aria-hidden='true'

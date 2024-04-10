@@ -1,9 +1,11 @@
 import { useRecoilValue } from 'recoil';
 import CartItem from './CartItem';
 import { cartState } from '../../store/cart';
+import { useCart } from '../../hooks/useCart';
 
 const CartItems = () => {
   const cart = useRecoilValue(cartState);
+  const { updateCartItem, deleteCartItem } = useCart();
 
   if (!cart) return <div>Nothing in cart</div>;
 
@@ -18,6 +20,8 @@ const CartItems = () => {
           imageUrl={item.product.imageUrl}
           description={item.product.description}
           price={item.product.price}
+          updateCartItem={updateCartItem}
+          deleteCartItem={deleteCartItem}
         />
       ))}
     </div>

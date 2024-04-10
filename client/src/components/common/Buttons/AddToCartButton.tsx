@@ -3,13 +3,19 @@ import { useCart } from '../../../hooks/useCart';
 import { cartState } from '../../../store/cart';
 import { useEffect, useState } from 'react';
 
-const AddToCartButton = ({ productId }: { productId: string }) => {
+const AddToCartButton = ({
+  productId,
+  quantity,
+}: {
+  productId: string;
+  quantity: number;
+}) => {
   const [isDisable, setIsDisable] = useState(false);
   const cart = useRecoilValue(cartState);
 
   const { addToCart } = useCart();
   const handleClick = () => {
-    addToCart(productId);
+    addToCart(productId, quantity);
   };
 
   useEffect(() => {
@@ -23,17 +29,12 @@ const AddToCartButton = ({ productId }: { productId: string }) => {
   return (
     <button
       onClick={handleClick}
-      className={`z-10 px-10 py-4 text-sm font-semibold text-primary rounded relative inline-flex group items-center justify-center cursor-pointer active:shadow-none ${
-        isDisable
-          ? 'bg-slate-300 '
-          : 'bg-gradient-to-tr from-slate-200 to-slate-200 shadow-lg '
-      }`}
       disabled={isDisable}
+      className={`text-sm px-6 w-full py-4 btn-click text-white font-bold ${
+        isDisable ? 'bg-primary/80 scale-[98%]' : 'bg-primary'
+      }`}
     >
-      {!isDisable && (
-        <span className='absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-full group-hover:h-full group-hover:rounded-none opacity-50 blur-sm'></span>
-      )}
-      <span className='relative'> Add to cart</span>
+      Add to cart
     </button>
   );
 };

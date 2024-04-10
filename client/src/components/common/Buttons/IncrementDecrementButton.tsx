@@ -1,41 +1,28 @@
-import { useCart } from '../../../hooks/useCart';
 import { MinusIcon, PlusIcon } from '../../../utils/icons';
 
 const IncrementDecrementButton = ({
   quantity,
-  cartItemId,
+  handleIncrease,
+  handleDecrease,
 }: {
   quantity: number;
-  cartItemId: string;
+  handleIncrease: () => void;
+  handleDecrease: () => void;
 }) => {
-  const { updateCartItem, deleteCartItem } = useCart();
-
-  const handleQuantityIncrease = () => {
-    updateCartItem(cartItemId, quantity + 1);
-  };
-
-  const handleQuantityDecrease = () => {
-    if (quantity - 1 <= 0) {
-      deleteCartItem(cartItemId);
-    } else {
-      updateCartItem(cartItemId, quantity - 1);
-    }
-  };
-
   return (
-    <div className='flex text-base font-medium rounded-2xl justify-around items-center'>
+    <div className='flex text-base font-medium justify-around items-center'>
       <button
-        className='hover-click-effect rounded-l-2xl h-10 w-10 flex justify-center items-center border-l border-t border-b border-slate-500 zoom-effect'
-        onClick={handleQuantityDecrease}
+        className='hover-click-effect h-10 w-full min-w-10 flex justify-center items-center border-l border-t border-b border-slate-500 zoom-effect'
+        onClick={handleDecrease}
       >
         <MinusIcon />
       </button>
-      <div className='h-10 w-10 flex justify-center items-center border-y border-slate-500'>
+      <div className='h-10 w-full min-w-10 flex justify-center items-center border-y border-slate-500'>
         {quantity}
       </div>
       <button
-        className='hover-click-effect zoom-effect border-r border-t border-b border-slate-500 rounded-r-2xl h-10 w-10 flex justify-center items-center'
-        onClick={handleQuantityIncrease}
+        className='hover-click-effect zoom-effect border-r border-t border-b border-slate-500 h-10 w-full min-w-10 flex justify-center items-center'
+        onClick={handleIncrease}
       >
         <PlusIcon />
       </button>

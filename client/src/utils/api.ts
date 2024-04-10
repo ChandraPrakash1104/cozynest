@@ -4,11 +4,11 @@ export const BACKEND_URL = `${import.meta.env.VITE_BACKEND_URL}/api/v1`;
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: BACKEND_URL,
+  timeout: 10000,
 });
 
 axiosInstance.interceptors.request.use((config) => {
   const userDetails = localStorage.getItem('user');
-  console.log(BACKEND_URL);
   if (userDetails) {
     const token = JSON.parse(userDetails).token;
     config.headers.Authorization = `Bearer ${token}`;

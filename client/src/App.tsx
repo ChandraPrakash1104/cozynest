@@ -6,36 +6,119 @@ import {
 } from 'react-router-dom';
 
 import RootLayout from './components/layout/RootLayout';
-import Home from './components/pages/Home/Home';
-import Shop from './components/pages/Shop';
-import About from './components/pages/About';
-import Contact from './components/pages/Contact';
-import './App.css';
 import { loader as redirectToHome } from './components/pages/Home/Home';
-import Login from './components/pages/auth/Login/Login';
-import Signup from './components/pages/auth/Signup/Signup';
-import './styles/customUtilities.css';
 import { RecoilRoot } from 'recoil';
-import AddProduct from './components/pages/Admin/Product/AddProduct';
-import Cart from './components/pages/Cart';
+import Loader from './components/common/Loader/Loader';
+import { Suspense, lazy } from 'react';
+
+const LazyHome = lazy(() => import('./components/pages/Home/Home'));
+const LazyShop = lazy(() => import('./components/pages/Shop'));
+const LazyProduct = lazy(() => import('./components/pages/Product'));
+const LazyCart = lazy(() => import('./components/pages/Cart'));
+const LazyAbout = lazy(() => import('./components/pages/About'));
+const LazyContact = lazy(() => import('./components/pages/Contact'));
+const LazyLogin = lazy(() => import('./components/pages/auth/Login/Login'));
+const LazySignup = lazy(() => import('./components/pages/auth/Signup/Signup'));
+const LazyAddProduct = lazy(
+  () => import('./components/pages/Admin/Product/AddProduct')
+);
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path='/' element={<RootLayout />}>
-        <Route index element={<Home />} loader={redirectToHome} />
-        <Route path='/home' element={<Home />} />
-        <Route path='/shop' element={<Shop />} />
-        <Route path='/cart' element={<Cart />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/contact' element={<Contact />} />
+      <Route
+        path='/'
+        element={
+          <Suspense fallback={<Loader />}>
+            <RootLayout />
+          </Suspense>
+        }
+      >
+        <Route
+          index
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazyHome />
+            </Suspense>
+          }
+          loader={redirectToHome}
+        />
+        <Route
+          path='/home'
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazyHome />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/shop'
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazyShop />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/product/:productId'
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazyProduct />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/cart'
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazyCart />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/about'
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazyAbout />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/contact'
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazyContact />
+            </Suspense>
+          }
+        />
       </Route>
       <Route path='/'>
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
+        <Route
+          path='/login'
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazyLogin />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/signup'
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazySignup />
+            </Suspense>
+          }
+        />
       </Route>
       <Route path='/admin'>
-        <Route path='/admin/addproduct' element={<AddProduct />} />
+        <Route
+          path='/admin/addproduct'
+          element={
+            <Suspense fallback={<Loader />}>
+              <LazyAddProduct />
+            </Suspense>
+          }
+        />
       </Route>
     </Route>
   )
@@ -44,7 +127,7 @@ const router = createBrowserRouter(
 const App = () => {
   return (
     <RecoilRoot>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </RecoilRoot>
   );
 };
