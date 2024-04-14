@@ -4,18 +4,18 @@ import Loader from '../common/Loader/Loader';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils/api';
 import { ProductDetail } from '../../typings/productTypes';
-import Error from '../common/Error/Error';
 import { formatPrice } from '../../utils/format';
 import Wrapper from '../common/UI/Wrapper';
 import IncrementDecrementButton from '../common/Buttons/IncrementDecrementButton';
 import AddToCartButton from '../common/Buttons/AddToCartButton';
+import Rating from '../Rating/Rating';
+import toast from 'react-hot-toast';
 
 const Product = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState<ProductDetail>();
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  console.log(productId);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,36 +33,44 @@ const Product = () => {
 
     fetchProduct();
   }, [productId]);
-  console.log(product);
 
   if (loading) {
     return <Loader />;
   }
 
   if (!product) {
-    return <Error />;
+    return <></>;
   }
+
   return (
     <Wrapper>
-      <div className='space-y-6'>
-        <div>
-          <img src={product.imageUrl} alt='' className='w-full max-w-[600px]' />
+      <div className='space-y-6 max-w-[25rem] md:space-y-[unset] md:max-w-[unset] md:flex md:gap-6 tracking-wide my-10'>
+        <div className='md:flex-grow md:relative overflow-hidden'>
+          <img
+            src={product.imageUrl}
+            alt=''
+            className='w-full max-w-[600px] md:w-[unset] md:absolute md:h-full object-center'
+          />
         </div>
-        <div className='space-y-1'>
-          <div className='text-2xl font-semibold'>{product.productName}</div>
-          <div className='font-semibold text-font-color2'>
+        <div className='space-y-4 md:max-w-[50%] md:p-10 md:space-y-8'>
+          <div className='text-2xl font-semibold md:text-4xl'>
+            {product.productName}
+          </div>
+          <div className='font-semibold md:text-lg text-font-color2'>
             <span className='text-sm'>Rs </span>
             {formatPrice(product.price)}
           </div>
-          <div>Ratings...</div>
-          <div className='text-sm font-medium'>
+          <div>
+            <Rating />
+          </div>
+          <div className='text-sm font-medium !leading-[1.5rem] tracking-wider  md:tracking-widest'>
             {product.description} Lorem ipsum dolor sit amet consectetur
             adipisicing elit. Officia blanditiis nemo quibusdam maiores quisquam
             autem est odio debitis tenetur voluptatum laborum veritatis
           </div>
-          <div>colors</div>
-          <div className='space-y-6'>
-            <div className='mt-10'>
+          <div className='h-[7rem]'>colors</div>
+          <div className='space-y-6 md:flex md:justify-around md:items-center md:space-y-[unset] md:space-x-2'>
+            <div className='mt-10 md:mt-[unset] md:max-w-44 flex-grow'>
               <IncrementDecrementButton
                 handleDecrease={() => {
                   setQuantity((pre) => {
@@ -76,10 +84,13 @@ const Product = () => {
                 quantity={quantity}
               />
             </div>
-            <div className=''>
+            <div className='md:max-w-72 flex-grow'>
               <AddToCartButton
                 productId={productId ?? ''}
                 quantity={quantity}
+                notify={() => {
+                  toast.success('Item added to cart');
+                }}
               />
             </div>
           </div>

@@ -50,7 +50,7 @@ const Signin = () => {
       {!loading && (
         <div className='lg:grid lg:grid-cols-2 h-screen '>
           <AuthContainer>
-            <div className='space-y-8'>
+            <div className='space-y-8 w-4/5 sm:w-1/2'>
               <AuthHeader
                 head='Welcome Back'
                 subHead='No account? '

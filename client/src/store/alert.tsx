@@ -1,8 +1,13 @@
 import { atom } from 'recoil';
+import { Alert } from '../typings/alertTypes';
 
-const alertAtom = atom({
-  key: 'alert',
-  default: null,
+const alertState = atom<Alert>({
+  key: 'alertState',
+  default: {
+    isActive: false,
+    type: 'warning',
+    label: '',
+  },
 });
 
-export { alertAtom };
+export { alertState };

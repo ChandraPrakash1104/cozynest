@@ -5,11 +5,14 @@ import { SeparatorLine } from '../../common/SeparatorLine';
 const Footer = () => {
   return (
     <div>
-      <div className='bg-slate-300 w-full h-[1px]'></div>
+      <SeparatorLine />
       <Wrapper>
-        <div className='lg:w-[80%] mt-8 text-sm'>
+        <div className='lg:w-[80%]  mt-8 text-sm'>
           <div className='md:grid md:grid-cols-3 space-y-4 md:space-x-0'>
-            <Link to='/home' className='text-xl font-bold md:pt-2'>
+            <Link
+              to='/home'
+              className='text-xl md:text-2xl md:pr-10 font-bold md:pt-2'
+            >
               Furniro
             </Link>
             <div className='flex justify-between md:grid md:grid-cols-2 md:col-span-2'>

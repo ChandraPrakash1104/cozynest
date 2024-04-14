@@ -27,7 +27,7 @@ const InputWithLabel: React.FC<InputWithLabelProps> = ({
     setTouched(true);
   };
   return (
-    <div className='flex flex-col space-y-1'>
+    <div className='flex flex-col space-y-1 w-full'>
       <label htmlFor={label} className='font-medium'>
         {label}
       </label>
@@ -35,7 +35,7 @@ const InputWithLabel: React.FC<InputWithLabelProps> = ({
         type={type}
         placeholder={placeholder}
         id={label}
-        className={`p-3 w-96 border text-sm ${
+        className={`p-3 w-full border text-sm ${
           warning?.length > 0
             ? 'border-warning-500 placeholder-warning-500 outline-warning-500'
             : 'border-slate-300 outline-black'

@@ -1,27 +1,24 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { ProductDetail } from '../typings/productTypes';
+import { BACKEND_URL } from '../utils/api';
 
-export const useFetchProduct = (id: string) => {
-  const [product, setProduct] = useState([]);
+export const useFetchProduct = () => {
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/product/${id}`
-        );
-        const data = response.data;
-        setProduct(data);
-      } catch (error) {
-        console.log(error);
-      }
+  const fetchProduct = async (id: string): Promise<ProductDetail | null> => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${BACKEND_URL}/product/${id}`);
+      const data = response.data;
       setLoading(false);
-    };
+      return data;
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      return null;
+    }
+  };
 
-    fetchProduct();
-  }, [id]);
-
-  return { product, loading };
+  return { fetchProduct, loading };
 };

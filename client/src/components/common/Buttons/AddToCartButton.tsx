@@ -1,30 +1,23 @@
-import { useRecoilValue } from 'recoil';
 import { useCart } from '../../../hooks/useCart';
-import { cartState } from '../../../store/cart';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const AddToCartButton = ({
   productId,
   quantity,
+  notify,
 }: {
   productId: string;
   quantity: number;
+  notify: () => void;
 }) => {
   const [isDisable, setIsDisable] = useState(false);
-  const cart = useRecoilValue(cartState);
 
   const { addToCart } = useCart();
   const handleClick = () => {
+    setIsDisable(true);
     addToCart(productId, quantity);
+    notify();
   };
-
-  useEffect(() => {
-    if (cart.find((item) => item.product.id === productId)) {
-      setIsDisable(true);
-    } else {
-      setIsDisable(false);
-    }
-  }, [cart]);
 
   return (
     <button

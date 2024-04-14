@@ -7,8 +7,6 @@ const CartItems = () => {
   const cart = useRecoilValue(cartState);
   const { updateCartItem, deleteCartItem } = useCart();
 
-  if (!cart) return <div>Nothing in cart</div>;
-
   return (
     <div className='space-y-8'>
       {cart.map((item) => (

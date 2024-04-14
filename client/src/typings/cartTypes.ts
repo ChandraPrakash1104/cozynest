@@ -3,6 +3,6 @@ import { Product } from './productTypes';
 export interface CartItem {
   id: string;
   quantity: number;
-  userId: string;
+  userId?: string;
   product: Product;
 }

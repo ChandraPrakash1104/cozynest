@@ -4,6 +4,8 @@ import { AxiosResponse } from 'axios';
 import { authState } from '../store/auth';
 import { cartState } from '../store/cart';
 import axiosInstance from '../utils/api';
+import { useFetchProduct } from './useFetchProduct';
+import { CartItem } from '../typings/cartTypes';
 
 interface CartAction {
   (): Promise<AxiosResponse<any>>;
@@ -11,15 +13,32 @@ interface CartAction {
 
 export const useCart = () => {
   const [cart, setCart] = useRecoilState(cartState);
-  const isAuthenticated = useRecoilValue(authState);
+  const auth = useRecoilValue(authState);
   const [loading, setLoading] = useState(false);
-
+  const { fetchProduct } = useFetchProduct();
   const fetchCartData = async () => {
-    setLoading(true);
     try {
       const response = await axiosInstance.get('/cart');
       const cartData = response.data.cartItems;
       setCart(cartData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  console.log(cart);
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      fetchCartData();
+    }
+  }, [auth]);
+
+  const handleCartUpdate = async (action: CartAction) => {
+    setLoading(true);
+    try {
+      await action();
+      await fetchCartData();
     } catch (error) {
       console.error(error);
     } finally {
@@ -27,25 +46,29 @@ export const useCart = () => {
     }
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchCartData();
-    }
-  }, [isAuthenticated]);
-
-  const handleCartUpdate = async (action: CartAction) => {
-    try {
-      await action();
-      await fetchCartData();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const addToCart = async (productId: string, quantity: number) => {
-    await handleCartUpdate(() =>
-      axiosInstance.post('/cart', { productId, quantity })
-    );
+    const product = await fetchProduct(productId);
+    if (product) {
+      const newCartItem: CartItem = {
+        id: `${product.id}-${Date.now()}`,
+        quantity: 1,
+        userId: '',
+        product: {
+          id: product.id,
+          productName: product.productName,
+          description: product.description,
+          imageUrl: product.imageUrl,
+          price: product.price,
+          stockQuantity: product.stockQuantity,
+        },
+      };
+      setCart((prevCartItems) => [...prevCartItems, newCartItem]);
+    }
+    if (auth.isAuthenticated) {
+      await handleCartUpdate(() =>
+        axiosInstance.post('/cart', { productId, quantity })
+      );
+    }
   };
 
   const updateCartItem = async (cartItemId: string, quantity: number) => {
@@ -60,7 +83,7 @@ export const useCart = () => {
 
   return {
     cart,
-    isAuthenticated,
+    isAuthenticated: auth.isAuthenticated,
     loading,
     addToCart,
     updateCartItem,
