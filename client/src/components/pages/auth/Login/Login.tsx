@@ -9,7 +9,6 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { authState } from '../../../../store/auth';
 import { loadingState } from '../../../../store/loading';
-import Loader from '../../../common/Loader/Loader';
 import { BACKEND_URL } from '../../../../utils/api';
 
 const Signin = () => {
@@ -45,37 +44,33 @@ const Signin = () => {
   };
 
   return (
-    <div>
-      {loading && <Loader />}
-      {!loading && (
-        <div className='lg:grid lg:grid-cols-2 h-screen '>
-          <AuthContainer>
-            <div className='space-y-8 w-4/5 sm:w-1/2'>
-              <AuthHeader
-                head='Welcome Back'
-                subHead='No account? '
-                linkLabel='Signup'
-                linkTo='/signup'
-              />
-              <LoginInputs
-                email={email}
-                password={password}
-                setEmail={setEmail}
-                setPassword={setPassword}
-              />
-              <PrimaryButton
-                label='Login'
-                size='medium'
-                styles='w-full rounded font-semibold'
-                handleClick={submitHandler}
-              />
-            </div>
-          </AuthContainer>
-          <div className='hidden lg:block '>
-            <Quote />
-          </div>
+    <div className='lg:grid lg:grid-cols-2 h-screen '>
+      <AuthContainer>
+        <div className='space-y-8 w-4/5 sm:w-1/2'>
+          <AuthHeader
+            head='Welcome Back'
+            subHead='No account? '
+            linkLabel='Signup'
+            linkTo='/signup'
+          />
+          <LoginInputs
+            email={email}
+            password={password}
+            setEmail={setEmail}
+            setPassword={setPassword}
+          />
+          <PrimaryButton
+            label='Login'
+            size='medium'
+            loading={loading}
+            styles='w-full rounded font-semibold'
+            handleClick={submitHandler}
+          />
         </div>
-      )}
+      </AuthContainer>
+      <div className='hidden lg:block '>
+        <Quote />
+      </div>
     </div>
   );
 };

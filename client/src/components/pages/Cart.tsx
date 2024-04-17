@@ -2,11 +2,14 @@ import Loader from '../common/Loader/Loader';
 import Wrapper from '../common/UI/Wrapper';
 import OrderSummary from '../Cart/OrderSummary';
 import { useCart } from '../../hooks/useCart';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 const CartItems = lazy(() => import('../Cart/CartItems'));
 
 const Cart = () => {
   const { loading } = useCart();
+  useEffect(() => {
+    document.title = document.title.split(' ')[0] + ' | Cart';
+  }, []);
   return (
     <div>
       {loading && <Loader />}

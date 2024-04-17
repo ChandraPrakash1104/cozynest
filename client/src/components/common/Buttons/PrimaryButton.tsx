@@ -1,12 +1,13 @@
 interface PrimaryButtonProps {
   label: string;
   size?: 'small' | 'medium' | 'large';
+  loading?: boolean;
   styles?: string;
-  handleClick: React.MouseEventHandler<HTMLButtonElement>;
+  handleClick: () => void;
 }
 
 const PrimaryButton = (props: PrimaryButtonProps) => {
-  const { label, size, styles, handleClick } = props;
+  const { label, size, styles, handleClick, loading = false } = props;
 
   let sizeStyle = '';
 
@@ -26,10 +27,15 @@ const PrimaryButton = (props: PrimaryButtonProps) => {
 
   return (
     <button
-      className={`bg-primary hover:bg-primary-dark transition-all text-white ${sizeStyle} ${styles}`}
+      className={`bg-primary hover:bg-primary-dark transition-all text-font-inverted rounded-full ${sizeStyle} ${styles} flex justify-center`}
       onClick={handleClick}
     >
       {label}
+      {loading ? (
+        <div className='h-5 w-5 ml-3 animate-spin rounded-xl border-b-2 border-white'></div>
+      ) : (
+        ''
+      )}
     </button>
   );
 };

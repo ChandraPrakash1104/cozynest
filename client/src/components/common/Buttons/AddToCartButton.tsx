@@ -23,7 +23,7 @@ const AddToCartButton = ({
     <button
       onClick={handleClick}
       disabled={isDisable}
-      className={`text-sm px-6 w-full py-4 btn-click text-white font-bold ${
+      className={`text-sm px-6 w-full py-4 btn-click text-white font-bold rounded-full ${
         isDisable ? 'bg-primary/80 scale-[98%]' : 'bg-primary'
       }`}
     >

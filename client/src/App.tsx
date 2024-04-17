@@ -6,13 +6,13 @@ import {
 } from 'react-router-dom';
 
 import RootLayout from './components/layout/RootLayout';
-import { loader as redirectToHome } from './components/pages/Home/Home';
+import { loader as redirectToHome } from './components/pages/Home';
 import { RecoilRoot } from 'recoil';
 import Loader from './components/common/Loader/Loader';
 import { Suspense, lazy } from 'react';
 import NotFoundPage from './components/pages/NotFoundPage';
 
-const LazyHome = lazy(() => import('./components/pages/Home/Home'));
+const LazyHome = lazy(() => import('./components/pages/Home'));
 const LazyShop = lazy(() => import('./components/pages/Shop'));
 const LazyProduct = lazy(() => import('./components/pages/Product'));
 const LazyCart = lazy(() => import('./components/pages/Cart'));

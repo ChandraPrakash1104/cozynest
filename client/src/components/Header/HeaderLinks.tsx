@@ -1,15 +1,15 @@
 import { useRecoilValue } from 'recoil';
-import CloseButton from '../../common/Buttons/CloseButton';
+import CloseButton from '../common/Buttons/CloseButton';
 import LinkItem from './LinkItem';
-import { authState } from '../../../store/auth';
-import Logout from '../../Auth/Logout/Logout';
+import { authState } from '../../store/auth';
+import Logout from '../Auth/Logout/Logout';
 
 const HeaderLinks = ({ handleOnClick }: { handleOnClick?: () => void }) => {
   const isAuth = useRecoilValue(authState);
   return (
     <>
       {handleOnClick && <CloseButton onClick={handleOnClick} />}
-      <div className='flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:justify-center lg:space-x-3 '>
+      <div className='flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:justify-center lg:space-x-3 h-full lg:items-center'>
         <LinkItem
           destination='/home'
           label='Home'

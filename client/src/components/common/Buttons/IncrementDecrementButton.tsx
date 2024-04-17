@@ -10,9 +10,9 @@ const IncrementDecrementButton = ({
   handleDecrease: () => void;
 }) => {
   return (
-    <div className='flex text-base font-medium justify-around items-center'>
+    <div className='flex text-base font-medium justify-around items-center group'>
       <button
-        className='hover-click-effect h-10 w-full min-w-10 flex justify-center items-center border-l border-t border-b border-slate-500 zoom-effect'
+        className='hover-click-effect h-10 w-full min-w-10 flex justify-center items-center border-l border-t border-b border-slate-500 zoom-effect rounded-l-full hover:rounded-full transition-all'
         onClick={handleDecrease}
       >
         <MinusIcon />
@@ -21,7 +21,7 @@ const IncrementDecrementButton = ({
         {quantity}
       </div>
       <button
-        className='hover-click-effect zoom-effect border-r border-t border-b border-slate-500 h-10 w-full min-w-10 flex justify-center items-center'
+        className='hover-click-effect zoom-effect border-r border-t border-b border-slate-500 h-10 w-full min-w-10 flex justify-center items-center rounded-r-full hover:rounded-full transition-all'
         onClick={handleIncrease}
       >
         <PlusIcon />

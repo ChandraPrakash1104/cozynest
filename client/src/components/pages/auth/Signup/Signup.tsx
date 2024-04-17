@@ -18,6 +18,7 @@ const Signup = () => {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const [isAuth, setIsAuth] = useRecoilState(authState);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const Signup = () => {
 
   const submitHandler = async () => {
     const formdata = { username, password, firstname, lastname, email };
-
+    setLoading(true);
     try {
       const response = await axios.post(
         `${BACKEND_URL}/user/register`,
@@ -48,6 +49,7 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   return (
@@ -75,6 +77,7 @@ const Signup = () => {
           <PrimaryButton
             label='Signup'
             size='medium'
+            loading={loading}
             styles='w-full rounded font-semibold'
             handleClick={submitHandler}
           />

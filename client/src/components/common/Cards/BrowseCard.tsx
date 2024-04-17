@@ -4,13 +4,12 @@ const BrowseCard = ({ imgUrl, label }: { imgUrl: string; label: string }) => {
   return (
     <Link
       to={`/shop?category=${encodeURIComponent(label.toLowerCase())}`}
-      className='relative cursor-pointer'
+      className='cursor-pointer group flex flex-col items-center gap-2'
     >
-      <div className='card-hover-effect'></div>
       <div className='space-y-2'>
         <img src={imgUrl} alt='#' />
       </div>
-      <div className='font-bold text-font-color1 text-lg text-center py-2'>
+      <div className='font-bold text-font-primary text-lg inline-flex text-center group-hover:border-b group-hover:border-font-primary'>
         {label}
       </div>
     </Link>

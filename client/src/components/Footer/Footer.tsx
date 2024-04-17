@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import Wrapper from '../../common/UI/Wrapper';
-import { SeparatorLine } from '../../common/SeparatorLine';
+import Wrapper from '../common/UI/Wrapper';
+import { SeparatorLine } from '../common/SeparatorLine';
 
 const Footer = () => {
   return (

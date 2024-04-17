@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import ModalOverlay from './ModalOverlay';
-import BackDrop from './BackDrop';
+import BackDrop from '../Backdrop/Backdrop';
 
 const portalElement = document.getElementById('overlays') as HTMLElement;
 

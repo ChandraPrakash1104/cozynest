@@ -8,13 +8,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#B88E2F',
-        'primary-dark': '#967426',
-        'primary-light': '#c4a45a',
+        primary: '#27233A',
+        secondary: {
+          1: '#505168',
+          2: '#DCC48E',
+        },
+        accent: '#B3C0A4',
+        neutral: '#EAEFD3',
+        hover: '#e5e7eb',
+        click: '#d1d5db',
+        font: {
+          primary: '#333333',
+          secondary: '#666666',
+          accent: '#666666',
+          inverted: '#dedede',
+        },
         'font-color1': '#333333',
         'font-color2': '#666666',
-        'green-accents': '#2EC1AC',
-        'red-accents': '#E97171',
         'light-bg': '#F4F5F7',
         'box-color': '#FFF3E3',
         'faded-font': '#666666',
