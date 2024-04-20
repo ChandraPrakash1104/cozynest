@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 interface PrimaryButtonProps {
   label: string;
   size?: 'small' | 'medium' | 'large';
@@ -26,9 +28,12 @@ const PrimaryButton = (props: PrimaryButtonProps) => {
   }
 
   return (
-    <button
+    <motion.button
       className={`bg-primary hover:bg-primary-dark transition-all text-font-inverted rounded-full ${sizeStyle} ${styles} flex justify-center`}
       onClick={handleClick}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ ease: 'backInOut', duration: '0.05' }}
     >
       {label}
       {loading ? (
@@ -36,7 +41,7 @@ const PrimaryButton = (props: PrimaryButtonProps) => {
       ) : (
         ''
       )}
-    </button>
+    </motion.button>
   );
 };
 

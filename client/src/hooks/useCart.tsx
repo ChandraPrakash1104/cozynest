@@ -17,17 +17,30 @@ export const useCart = () => {
   const auth = useRecoilValue(authState);
   const [loading, setLoading] = useState(false);
   const { fetchProduct } = useFetchProduct();
+
+  const calculateTotalPrice = (cartItems: CartItem[]) => {
+    return cartItems.reduce(
+      (total, item) => total + item.quantity * item.product.price,
+      0
+    );
+  };
+
+  const saveCartToLocalStorage = (cartData: CartItem[]) => {
+    localStorage.setItem('cartData', JSON.stringify(cartData));
+  };
+
   const fetchCartData = async () => {
     try {
+      let cartData: CartItem[] = [];
       if (auth.isAuthenticated) {
         const response = await axiosInstance.get('/cart');
-        const cartData = response.data.cartItems;
-        setCart(cartData);
+        cartData = response.data.cartItems;
       } else {
         const stringCart = localStorage.getItem('cartData');
-        const cartData = JSON.parse(stringCart || '');
-        setCart(cartData);
+        cartData = JSON.parse(stringCart || '[]');
       }
+      setCart(cartData);
+      setCartsTotal(calculateTotalPrice(cartData));
     } catch (error) {
       console.error(error);
     }
@@ -36,14 +49,9 @@ export const useCart = () => {
   const handleCartUpdate = async (action: CartAction) => {
     setLoading(true);
     try {
-      await action();
-      await fetchCartData();
       if (auth.isAuthenticated) {
-        const response = await axiosInstance.get('/cart');
-        const cartData = response.data.cartItems;
-        localStorage.setItem('cartData', JSON.stringify(cartData));
-      } else {
-        localStorage.setItem('cartData', JSON.stringify(cart));
+        await action();
+        await fetchCartData();
       }
     } catch (error) {
       console.error(error);
@@ -53,83 +61,72 @@ export const useCart = () => {
   };
 
   const addToCart = async (productId: string, quantity: number) => {
-    const existingItem = cart.find((item) => item.product.id === productId);
+    try {
+      const existingItem = cart.find((item) => item.product.id === productId);
 
-    if (existingItem) {
-      setCart((prevCart) =>
-        prevCart.map((item) =>
-          item.product.id === productId ? { ...item, quantity } : item
-        )
-      );
-      setCartsTotal((prevTotal) => {
-        const oldPrice = existingItem.quantity * existingItem.product.price;
-        return prevTotal - oldPrice < 0 ? 0 : prevTotal - oldPrice;
-      });
-      await handleCartUpdate(() =>
-        axiosInstance.put(`/cart/${existingItem.id}`, { quantity })
-      );
-    } else {
-      const product = await fetchProduct(productId);
-      if (product) {
-        const newCartItem: CartItem = {
-          id: `${product.id}-${Date.now()}`,
-          quantity: quantity,
-          userId: '',
-          product: {
-            id: product.id,
-            productName: product.productName,
-            description: product.description,
-            imageUrl: product.imageUrl,
-            price: product.price,
-            stockQuantity: product.stockQuantity,
-          },
-        };
-        setCart((prevCartItems) => [...prevCartItems, newCartItem]);
-        setCartsTotal((prevTotal) => {
-          return prevTotal + product.price * quantity < 0
-            ? 0
-            : prevTotal + product.price * quantity;
-        });
+      if (existingItem) {
+        const updatedQuantity = existingItem.quantity + quantity;
+        updateCartItem(existingItem.id, updatedQuantity);
+      } else {
+        const product = await fetchProduct(productId);
+        if (product) {
+          const newCartItem: CartItem = {
+            id: `${product.id}-${Date.now()}`,
+            quantity: quantity,
+            userId: '',
+            product: {
+              id: product.id,
+              productName: product.productName,
+              description: product.description,
+              imageUrl: product.imageUrl,
+              price: product.price,
+              stockQuantity: product.stockQuantity,
+            },
+          };
+          setCart([...cart, newCartItem]);
+          setCartsTotal((prevTotal) => prevTotal + product.price * quantity);
+          saveCartToLocalStorage([...cart, newCartItem]);
+          await handleCartUpdate(() =>
+            axiosInstance.post('/cart', { productId, quantity: quantity })
+          );
+        }
       }
-
-      await handleCartUpdate(() =>
-        axiosInstance.post('/cart', { productId, quantity: quantity })
-      );
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const updateCartItem = async (cartItemId: string, quantity: number) => {
-    const existingItem = cart.find((item) => item.id === cartItemId);
-
-    if (existingItem && quantity > 0) {
-      setCart((prevCart) =>
-        prevCart.map((item) =>
+    try {
+      setCart((prevCart) => {
+        const res = prevCart.map((item) =>
           item.id === cartItemId ? { ...item, quantity: quantity } : item
-        )
-      );
-      setCartsTotal((prevTotal) => {
-        const oldPrice = existingItem.quantity * existingItem.product.price;
-        const newPrice =
-          prevTotal - oldPrice + quantity * existingItem.product.price;
-        return newPrice < 0 ? 0 : newPrice;
+        );
+        saveCartToLocalStorage(res);
+
+        return res;
       });
+
+      setCartsTotal(calculateTotalPrice(cart));
+      await handleCartUpdate(() =>
+        axiosInstance.put(`/cart/${cartItemId}`, { quantity })
+      );
+    } catch (error) {
+      console.error(error);
     }
-    await handleCartUpdate(() =>
-      axiosInstance.put(`/cart/${cartItemId}`, { quantity })
-    );
   };
 
   const deleteCartItem = async (cartItemId: string) => {
     const existingItem = cart.find((item) => item.id === cartItemId);
 
     if (existingItem) {
-      setCart((prevCart) => prevCart.filter((item) => item.id !== cartItemId));
-
-      setCartsTotal((prevTotal) => {
-        const oldPrice = existingItem.quantity * existingItem.product.price;
-        const newPrice = prevTotal - oldPrice;
-        return newPrice < 0 ? 0 : newPrice;
+      setCart((prevCart) => {
+        const res = prevCart.filter((item) => item.id !== cartItemId);
+        saveCartToLocalStorage(res);
+        return res;
       });
+
+      setCartsTotal(calculateTotalPrice(cart));
     }
     await handleCartUpdate(() => axiosInstance.delete(`/cart/${cartItemId}`));
   };
