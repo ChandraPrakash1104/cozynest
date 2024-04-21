@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { AxiosResponse } from 'axios';
 import { authState } from '../store/auth';
@@ -24,6 +24,15 @@ export const useCart = () => {
       0
     );
   };
+
+  const productAlreadyInCart = (productId: string) => {
+    const flag = cart.find((cartItem) => cartItem.product.id === productId);
+    return flag !== undefined;
+  };
+
+  useEffect(() => {
+    setCartsTotal(calculateTotalPrice(cart));
+  }, [cart]);
 
   const saveCartToLocalStorage = (cartData: CartItem[]) => {
     localStorage.setItem('cartData', JSON.stringify(cartData));
@@ -64,10 +73,7 @@ export const useCart = () => {
     try {
       const existingItem = cart.find((item) => item.product.id === productId);
 
-      if (existingItem) {
-        const updatedQuantity = existingItem.quantity + quantity;
-        updateCartItem(existingItem.id, updatedQuantity);
-      } else {
+      if (!existingItem) {
         const product = await fetchProduct(productId);
         if (product) {
           const newCartItem: CartItem = {
@@ -139,5 +145,6 @@ export const useCart = () => {
     updateCartItem,
     deleteCartItem,
     fetchCartData,
+    productAlreadyInCart,
   };
 };

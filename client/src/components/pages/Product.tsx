@@ -6,16 +6,15 @@ import { BACKEND_URL } from '../../utils/api';
 import { ProductDetail } from '../../typings/productTypes';
 import { formatPrice } from '../../utils/format';
 import Wrapper from '../common/UI/Wrapper';
-import IncrementDecrementButton from '../common/Buttons/IncrementDecrementButton';
 import AddToCartButton from '../common/Buttons/AddToCartButton';
 import Rating from '../Rating/Rating';
 import toast from 'react-hot-toast';
+import AddToWishlist from '../Product/AddToWishlist';
 
 const Product = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState<ProductDetail>();
   const [loading, setLoading] = useState(false);
-  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -69,30 +68,16 @@ const Product = () => {
             autem est odio debitis tenetur voluptatum laborum veritatis
           </div>
           <div className='h-[7rem]'>colors</div>
-          <div className='space-y-6 md:flex md:justify-around md:items-center md:space-y-[unset] md:space-x-2'>
-            <div className='mt-10 md:mt-[unset] md:max-w-44 flex-grow'>
-              <IncrementDecrementButton
-                handleDecrease={() => {
-                  setQuantity((pre) => {
-                    if (pre > 1) return pre - 1;
-                    return 1;
-                  });
-                }}
-                handleIncrease={() => {
-                  setQuantity((pre) => pre + 1);
-                }}
-                quantity={quantity}
-              />
-            </div>
-            <div className='md:max-w-72 flex-grow'>
-              <AddToCartButton
-                productId={productId ?? ''}
-                quantity={quantity}
-                notify={() => {
-                  toast.success('Item added to cart');
-                }}
-              />
-            </div>
+
+          <div className='flex-grow space-y-4'>
+            <AddToCartButton
+              productId={productId ?? ''}
+              quantity={1}
+              notify={() => {
+                toast.success('Item added to cart');
+              }}
+            />
+            <AddToWishlist productId={product.id} />
           </div>
         </div>
       </div>

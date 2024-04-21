@@ -2,16 +2,10 @@ import { useRecoilValue } from 'recoil';
 import CartItem from './CartItem';
 import { cartState } from '../../store/cart';
 import { useCart } from '../../hooks/useCart';
-import { useEffect } from 'react';
-import { authState } from '../../store/auth';
 
 const CartItems = () => {
   const cart = useRecoilValue(cartState);
-  const auth = useRecoilValue(authState).isAuthenticated;
-  const { updateCartItem, deleteCartItem, fetchCartData } = useCart();
-  useEffect(() => {
-    fetchCartData();
-  }, [auth]);
+  const { updateCartItem, deleteCartItem } = useCart();
 
   return (
     <div className='space-y-8'>
