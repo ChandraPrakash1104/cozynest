@@ -16,6 +16,8 @@ const Products = () => {
 
   const category = searchParams.get('category');
 
+  console.log(products);
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {

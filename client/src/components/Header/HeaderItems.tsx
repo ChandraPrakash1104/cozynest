@@ -17,7 +17,6 @@ const HeaderItems = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const isAuth = useRecoilValue(authState).isAuthenticated;
-  console.log(isAuth);
 
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
