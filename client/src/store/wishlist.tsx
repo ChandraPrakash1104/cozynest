@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
-import { Product } from '../typings/productTypes';
+import { wishlist } from '../typings/wishlistTypes';
 
-export const wishlistStore = atom<Product[]>({
+export const wishlistStore = atom<wishlist[]>({
   key: 'wishlistStore',
   default: [],
 });

@@ -63,9 +63,12 @@ const HeaderItems = () => {
           </div>
         </Modal>
       )}
-      <li className='hover-click-effect rounded-full p-2 lg:p-3'>
+      <Link
+        className='hover-click-effect rounded-full p-2 lg:p-3'
+        to={'wishlist'}
+      >
         <img src={wishlistIcon} alt='wishlist' className='w-5' />
-      </li>
+      </Link>
       <Link
         className='hover-click-effect rounded-full p-2 lg:p-3 relative'
         to={'/cart'}

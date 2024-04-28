@@ -5,7 +5,17 @@ const prisma = new PrismaClient();
 
 const bulkFilter = async (req: Request, res: Response) => {
   try {
-    const products = await prisma.product.findMany();
+    const result = await prisma.product.findMany();
+    const products = result.map((product) => ({
+      id: product.id,
+      productName: product.product_name,
+      description: product.description,
+      imageUrl: product.image_url,
+      price: product.price,
+      stockQuantity: product.stock_quantity,
+      category: product.category,
+      type: product.type,
+    }));
     res.status(201).json(products);
   } catch (err) {
     console.error(err);
@@ -40,12 +50,22 @@ const idFilter = async (req: Request, res: Response) => {
 const categoryFilter = async (req: Request, res: Response) => {
   try {
     const { category } = req.params;
-    const products = await prisma.product.findMany({
+    const result = await prisma.product.findMany({
       where: {
         category: category,
       },
     });
-    res.send(products);
+    const products = result.map((product) => ({
+      id: product.id,
+      productName: product.product_name,
+      description: product.description,
+      imageUrl: product.image_url,
+      price: product.price,
+      stockQuantity: product.stock_quantity,
+      category: product.category,
+      type: product.type,
+    }));
+    res.status(201).json(products);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'something went wrong' });

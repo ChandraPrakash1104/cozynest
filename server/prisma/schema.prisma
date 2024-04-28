@@ -24,6 +24,7 @@ model User {
   orders       Order[]
   reviews      Review[]
   cart         Cart[]
+  wishlist     Wishlist[]
 }
 
 // Product model
@@ -38,6 +39,7 @@ model Product {
   type            String
   // Define relationships
   order_items     OrderItem[]
+  wishlist        Wishlist[]
   reviews         Review[]
   carts           Cart[]
 }
@@ -87,6 +89,16 @@ model Cart {
   user_id     String
   product_id  String
   quantity    Int
+
+  // Define relationships
+  user        User    @relation(fields: [user_id], references: [id])
+  product     Product @relation(fields: [product_id], references: [id])
+}
+
+model Wishlist {
+  id   String @id @default(uuid())
+  user_id     String
+  product_id  String
 
   // Define relationships
   user        User    @relation(fields: [user_id], references: [id])

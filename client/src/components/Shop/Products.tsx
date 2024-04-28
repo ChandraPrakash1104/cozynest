@@ -51,11 +51,13 @@ const Products = () => {
               to={`/product/${product.id}`}
             >
               <div className='w-64 relative group/item'>
-                {/* <div className='absolute inset-0 flex items-center justify-center invisible group-hover/item:visible'>
-                  <div className='bg-black opacity-0 hover:opacity-20 transition-all absolute w-full h-full' />
-                </div> */}
                 <div>
-                  <ProductCard product={product} />
+                  <ProductCard
+                    productName={product.productName}
+                    imageUrl={product.imageUrl}
+                    description={product.description}
+                    price={product.price}
+                  />
                 </div>
               </div>
             </Link>

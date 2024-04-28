@@ -12,8 +12,12 @@ export const useWishlist = () => {
   const fetchWishlist = async () => {
     setLoading(true);
     if (auth.isAuthenticated) {
-      const res = await axiosInstance.get(`${BACKEND_URL}/wishlist`);
-      setWishlist(res.data.wishlist);
+      try {
+        const res = await axiosInstance.get(`${BACKEND_URL}/wishlist`);
+        setWishlist(res.data.wishlist);
+      } catch (e) {
+        console.log(e);
+      }
     }
     setLoading(false);
   };
@@ -27,7 +31,7 @@ export const useWishlist = () => {
     }
   };
 
-  const deleteWishListItem = async (wishListItemId: string) => {
+  const deleteWishlistItem = async (wishListItemId: string) => {
     if (auth.isAuthenticated) {
       const res = await axiosInstance.delete(
         `${BACKEND_URL}/wishlist/${wishListItemId}`
@@ -39,7 +43,7 @@ export const useWishlist = () => {
   return {
     fetchWishlist,
     addToWishlist,
-    deleteWishListItem,
+    deleteWishlistItem,
     loading,
   };
 };
